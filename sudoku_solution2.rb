@@ -66,7 +66,7 @@ def find_next_blank(board_string, element_position=0)
 end
 
 def solver(board_string, element_position = 0, current_pass=1)
-  puts "enter solver: #{element_position} "
+  # puts "enter solver: #{element_position} "
   board_array_flat = flatten_array(board_string)
   board_array = two_d_array(board_string)
 
@@ -80,11 +80,13 @@ def solver(board_string, element_position = 0, current_pass=1)
   return board_array if element_position.nil?
 
   #.tap{|x| p "current solutions: #{x} pass: #{current_pass} col: #{col} row_index: #olumn_indexow_index}" olumn_index
-  p solutions = possibilities(row_index, column_index, board_string)
+  solutions = possibilities(row_index, column_index, board_string)
 
   # if solutions == []
   #    return nil
-  p board_array
+  # p board_array
+  # p board_array_flat
+
   if board_array_flat[element_position] != "-"
     solver(board_string, element_position + 1)
   elsif solutions.length > 1
@@ -97,7 +99,13 @@ def solver(board_string, element_position = 0, current_pass=1)
         solver(new_possible_game_string, element_position + 1) if new_possible_game_string.length == 81
       end
     end
+  elsif element_position == 80
+    board_array_flat[element_position] = solutions[0]
+    p board_array_flat
+    return board_array_flat
   elsif solutions.length == 1
+    solutions
+    element_position
     board_array_flat[element_position] = solutions[0]
     new_possible_board_array = []
     board_array_flat.each do |element|
@@ -105,24 +113,11 @@ def solver(board_string, element_position = 0, current_pass=1)
         new_possible_game_string = new_possible_board_array.join('')
         solver(new_possible_game_string, element_position + 1) if new_possible_game_string.length == 81
       end
-
   else
-    return p 'HEY THIS IS BROKE'
+    return 'HEY THIS IS BROKE'
   end
 end
 
 
-solver(game1_board_string)
+p solver(game1_board_string)
 
-#   else
-#     solutions.each do |guesser|
-#       flat_array[element_position] = guesser.tap{|x| p "Current guess: #{x}"}
-#       solver(board_string, element_position + 1, current_pass + 1)
-#     end
-#   end
-
-#   puts "end of line"
-#   board_array
-# end
-
-solver(game1_board_string)
